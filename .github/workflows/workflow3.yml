@@ -1,0 +1,16 @@
+name: Workflow 3
+on:
+  workflow_run:
+    workflows: ["Workflow 1"]
+    types:
+      - completed
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Workflow 3
+        run: echo "Workflow 3 is running (triggered by Workflow 1)..."

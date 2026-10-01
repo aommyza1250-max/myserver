@@ -1,0 +1,13 @@
+*
+!dist/
+!dist/index.js
+!dist/Utils.js
+!dist/Test1.js
+!.github/
+!.github/workflows/
+!.github/workflows/*
+!.gitignore
+!src/
+!src/*
+!package.json
+!tsconfig.json
