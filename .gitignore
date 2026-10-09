@@ -1,4 +1,6 @@
 *
+.env
+!.env.example
 !dist/
 !dist/index.js
 !dist/Utils.js
@@ -9,5 +11,15 @@
 !.gitignore
 !src/
 !src/*
+!public/
+!public/*
 !package.json
 !tsconfig.json
+!Dockerfile
+!.dockerignore
+!docker-compose.yml
+!package-lock.json
+!test/
+!test/*.test.cjs
+!docs/
+!docs/**
