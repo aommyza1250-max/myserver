@@ -90,16 +90,11 @@ Compose นี้รันเฉพาะ API และเชื่อมต่�
 
 - `DOCKERHUB_IMAGE` — ชื่อ image แบบ `ชื่อผู้ใช้/ชื่อrepository` ใช้ตัวพิมพ์เล็ก เช่น `myaccount/myserver-api`
 
-workflow `CI` จะทำงานเมื่อ push หรือเปิด pull request และแสดงสอง jobs ต่อกัน: `test` รัน `npm ci` กับ `npm test`, จากนั้น `build` จะ build Docker image โดยไม่ต้องตั้ง Docker Hub secrets จึงใช้ตรวจงานอัตโนมัติได้ทันทีเมื่อ push workflow ขึ้น GitHub
+workflow `CI` ใน `.github/workflows/ci.yml` ทำงานเมื่อ push หรือเปิด pull request โดย `unit_test` จะทำงานก่อน จากนั้น `docker_build`, `audit` และ `api_test` จะทำงานขนานกันตามภาพตัวอย่าง งาน `publish` จะถูกข้ามสำหรับ push ปกติ จึงไม่ต้องตั้ง Docker Hub secrets เพื่อให้ CI ผ่าน
 
 ### ส่ง image ไป Docker Hub
 
-เลือกวิธีใดวิธีหนึ่ง:
-
-1. **Release:** สร้าง GitHub Release โดยใช้ tag รูปแบบ `v1.0.0` แล้วกด Publish release
-2. **สั่งรันเอง:** เปิดแท็บ **Actions → Publish Docker image → Run workflow**, เลือก branch แล้วกรอกเหตุผลในช่อง `reason`
-
-ทั้งสองวิธีจะทดสอบก่อน หากผ่านจึง build และ push image ไป Docker Hub โดย Release จะสร้าง tag เวอร์ชัน และ workflow ที่สั่งเองจะสร้าง tag ตาม branch และ commit
+เปิด **Actions → CI → Run workflow** เลือก branch แล้วกรอกเหตุผลในช่อง `reason` หรือ push tag เวอร์ชัน เช่น `v1.0.0` ทั้งสองกรณีจะรัน unit test, Docker build, audit และ API test ก่อน จากนั้นจึงส่ง image ไป Docker Hub โดยใช้ secrets และ variable ที่ตั้งไว้ด้านบน
 
 ## 5. สร้าง Azure Container Instance ตามสไลด์
 

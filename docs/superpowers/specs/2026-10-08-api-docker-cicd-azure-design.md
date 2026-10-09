@@ -1,7 +1,7 @@
 # API, Docker, CI/CD, and Azure Design
 
 Date: 2026-10-08
-Status: Proposed for user review
+Status: Approved by user
 
 ## Goal
 
@@ -30,7 +30,8 @@ Follow the deployment sequence in the supplied Part 4 slides while making the ex
 
 - Replace the placeholder `npm test` with a deterministic test command that does not require live Atlas credentials.
 - Keep the existing basic utility check and add useful unit checks for API input validation if the validation logic can be isolated cleanly.
-- Run install, tests, and TypeScript build in GitHub Actions for pushes and pull requests.
+- Run `unit_test` first in GitHub Actions for pushes and pull requests, then run `docker_build`, `audit`, and `api_test` as parallel jobs.
+- Keep a `publish` job in the same workflow. Skip it on ordinary branch pushes and pull requests; run it for a version tag push or manual dispatch after the checks pass.
 - Use the same supported Node major version for CI and the container build.
 
 ### Docker and Compose
@@ -42,7 +43,7 @@ Follow the deployment sequence in the supplied Part 4 slides while making the ex
 
 ### Docker Hub publishing
 
-- Add a GitHub Actions workflow that builds and pushes the image when a GitHub Release is published, and on manual dispatch with a required reason input as shown in the slides.
+- Add Docker Hub publishing to `.github/workflows/ci.yml`; support version tag pushes and manual dispatch with a required reason, and skip publishing for ordinary pushes and pull requests.
 - Use Docker's official login, metadata, and build-push actions at supported stable versions.
 - Read the Docker Hub username and access token from GitHub Actions repository secrets. Read the image name from a repository variable or an equally clear, documented setting.
 - Never commit credentials or copy the token-like string visible in the PDF screenshot.
@@ -61,7 +62,7 @@ Follow the deployment sequence in the supplied Part 4 slides while making the ex
 3. Automated tests and the TypeScript build can run without a production database secret.
 4. Docker image builds from a clean checkout and excludes `.env` and local-only files.
 5. Compose starts the API with the Atlas URI supplied through local environment configuration.
-6. GitHub Actions validates pull requests and publishes an image on a published Release or manual dispatch.
+6. GitHub Actions runs unit, Docker build, dependency audit, and API checks; tag pushes or manual dispatch publish the image after those checks pass.
 7. The guide explains all account and cloud steps the user must perform, including secret setup, Atlas network access, Postman checks, and stopping/deleting ACI to control costs.
 
 ## Out of scope
