@@ -90,7 +90,7 @@ Compose นี้รันเฉพาะ API และเชื่อมต่�
 
 - `DOCKERHUB_IMAGE` — ชื่อ image แบบ `ชื่อผู้ใช้/ชื่อrepository` ใช้ตัวพิมพ์เล็ก เช่น `myaccount/myserver-api`
 
-workflow `CI` จะทำงานเมื่อ push หรือเปิด pull request และรัน `npm ci`, `npm test` และ `docker build` โดยไม่ต้องตั้ง Docker Hub secrets จึงใช้ตรวจงานอัตโนมัติได้ทันทีเมื่อ push workflow ขึ้น GitHub
+workflow `CI` จะทำงานเมื่อ push หรือเปิด pull request และแสดงสอง jobs ต่อกัน: `test` รัน `npm ci` กับ `npm test`, จากนั้น `build` จะ build Docker image โดยไม่ต้องตั้ง Docker Hub secrets จึงใช้ตรวจงานอัตโนมัติได้ทันทีเมื่อ push workflow ขึ้น GitHub
 
 ### ส่ง image ไป Docker Hub
 
